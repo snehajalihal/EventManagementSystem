@@ -1,7 +1,6 @@
-
-venv/
+.env
+*.db
 __pycache__/
 *.py[cod]
-.env
-events.db
-instance/
+.venv/
+venv/
