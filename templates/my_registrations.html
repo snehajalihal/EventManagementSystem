@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Registrations | EventManagement</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <nav class="navbar">
+        <h2>EventManagement</h2>
+        <div>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('events') }}">View Events</a>
+            <a href="{{ url_for('my_registrations') }}">My Registrations</a>
+
+            {% if session.get('role') == 'admin' %}
+                <a href="{{ url_for('admin_events') }}">Admin Dashboard</a>
+            {% endif %}
+
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+
+    <main class="hero">
+        <p class="tagline">YOUR EVENT JOURNEY</p>
+        <h1>My Registrations</h1>
+        <p class="description">
+            {% if events %}
+                You're all set! Here are the events you've signed up for.
+            {% else %}
+                Your next experience is waiting for you.
+            {% endif %}
+        </p>
+    </main>
+
+    <section class="about">
+        {% if events %}
+            <h2>Your Registered Events ({{ events|length }})</h2>
+
+            <div class="event-grid">
+                {% for event in events %}
+                    <article class="event-card">
+                        <p class="tagline">REGISTRATION CONFIRMED</p>
+
+                        <h2>{{ event.title }}</h2>
+
+                        <p>{{ event.description }}</p>
+
+                        <p>
+                            <strong>Date</strong><br>
+                            {{ event.event_date }}
+                        </p>
+
+                        <p>
+                            <strong>Location</strong><br>
+                            {{ event.location }}
+                        </p>
+
+                        <p>
+                            <strong>Registered on</strong><br>
+                            {{ event.registered_at }}
+                        </p>
+
+                        <p class="registration-status">
+                            ✓ You're registered!
+                        </p>
+
+                        <a class="btn secondary"
+                           href="{{ url_for('events') }}">
+                            Explore More Events
+                        </a>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <article class="event-card">
+                <h2>No registrations yet!</h2>
+                <p>You haven't signed up for any events yet. Let's change that!</p>
+
+                <a class="btn primary" href="{{ url_for('events') }}">
+                    Explore Events
+                </a>
+            </article>
+        {% endif %}
+    </section>
+
+    <footer>
+        <p>© 2026 EventManagement | Event Management System</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Event | EventManagement</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <h2>EventManagement</h2>
+        <div>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('events') }}">View Events</a>
+            <a href="{{ url_for('admin_events') }}">Admin Dashboard</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+
+    <main class="form-container">
+        <p class="tagline">ADMIN DASHBOARD</p>
+        <h1>Edit Event</h1>
+        <p>Update the details of your event below.</p>
+
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label for="title">Event Name</label>
+            <input
+                type="text"
+                id="title"
+                name="title"
+                value="{{ event.title }}"
+                maxlength="150"
+                required
+            >
+
+            <label for="description">Description</label>
+            <textarea
+                id="description"
+                name="description"
+                rows="5"
+                maxlength="2000"
+                required
+            >{{ event.description }}</textarea>
+
+            <label for="event_date">Event Date</label>
+            <input
+                type="date"
+                id="event_date"
+                name="event_date"
+                value="{{ event.event_date }}"
+                required
+            >
+
+            <label for="location">Location</label>
+            <input
+                type="text"
+                id="location"
+                name="location"
+                value="{{ event.location }}"
+                maxlength="200"
+                required
+            >
+
+            <button type="submit" class="btn primary">Save Changes</button>
+            <a class="btn secondary" href="{{ url_for('events') }}">Cancel</a>
+        </form>
+    </main>
+
+    <footer>
+        <p>© 2026 EventManagement | Event Management System</p>
+    </footer>
+</body>
+</html>

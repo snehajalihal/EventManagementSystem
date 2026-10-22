@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | EventManagement</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <nav class="navbar">
+        <h2>EventManagement</h2>
+        <div>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('events') }}">View Events</a>
+            <a href="{{ url_for('my_registrations') }}">My Registrations</a>
+            <a href="{{ url_for('admin_events') }}">Admin Dashboard</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+
+    <main class="about">
+        <p class="tagline">EVENT MANAGEMENT PORTAL</p>
+        <h1>Admin Dashboard</h1>
+        <p>Monitor your events and manage your community.</p>
+
+        <!-- Analytics cards -->
+        <div class="event-grid">
+            <article class="event-card">
+                <p class="tagline">EVENTS</p>
+                <h2>{{ total_events }}</h2>
+                <p>Total events created</p>
+            </article>
+
+            <article class="event-card">
+                <p class="tagline">USERS</p>
+                <h2>{{ total_users }}</h2>
+                <p>Registered user accounts</p>
+            </article>
+
+            <article class="event-card">
+                <p class="tagline">REGISTRATIONS</p>
+                <h2>{{ total_registrations }}</h2>
+                <p>Total event registrations</p>
+            </article>
+        </div>
+
+        <!-- Popular events -->
+        <section>
+            <h2>Most Popular Events</h2>
+
+            {% if popular_events %}
+                <div class="event-grid">
+                    {% for event in popular_events %}
+                        <article class="event-card">
+                            <h3>{{ event.title }}</h3>
+                            <p>
+                                <strong>Registrations:</strong>
+                                {{ event.registration_count }}
+                            </p>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No events have been created yet.</p>
+            {% endif %}
+        </section>
+    </main>
+
+    <!-- Create event form -->
+    <main class="form-container">
+        <p class="tagline">EVENT MANAGEMENT PORTAL</p>
+        <h2>Create a New Event</h2>
+        <p>Bring people together by adding your next event.</p>
+
+        {% if message %}
+            <p class="form-message" role="alert">{{ message }}</p>
+        {% endif %}
+
+        <form action="{{ url_for('admin_events') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label for="title">Event Name</label>
+            <input
+                type="text"
+                id="title"
+                name="title"
+                placeholder="e.g. Tech Fest 2026"
+                maxlength="150"
+                required
+            >
+
+            <label for="description">Event Description</label>
+            <textarea
+                id="description"
+                name="description"
+                placeholder="Tell people what makes this event special"
+                rows="5"
+                maxlength="2000"
+                required
+            ></textarea>
+
+            <label for="event_date">Event Date</label>
+            <input
+                type="date"
+                id="event_date"
+                name="event_date"
+                required
+            >
+
+            <label for="location">Event Location</label>
+            <input
+                type="text"
+                id="location"
+                name="location"
+                placeholder="e.g. Bengaluru, Karnataka"
+                maxlength="200"
+                required
+            >
+
+            <button type="submit" class="btn primary">
+                Create Event
+            </button>
+        </form>
+    </main>
+
+    <footer>
+        <p>© 2026 EventManagement | Event Management System</p>
+    </footer>
+</body>
+</html>

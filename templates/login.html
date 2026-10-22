@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | EventManagement</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <h2>EventManagement</h2>
+        <a href="/">Home</a>
+    </nav>
+
+    <main class="form-container">
+        <h1>Welcome Back!</h1>
+        <p>Log in to explore and register for events.</p>
+
+        <form action="/login" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email"
+                   placeholder="Enter your email" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password"
+                   placeholder="Enter your password" required>
+
+            <button type="submit" class="btn primary">Login</button>
+        </form>
+
+        <p class="form-footer">
+            Don't have an account? <a href="/register">Register</a>
+        </p>
+    </main>
+</body>
+</html>

@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventManagement</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <nav class="navbar">
+        <h2>EventManagement</h2>
+
+        <div>
+            <a href="{{ url_for('home') }}">Home</a>
+
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('events') }}">Events</a>
+                <a href="{{ url_for('my_registrations') }}">My Registrations</a>
+
+                {% if session.get('role') == 'admin' %}
+                    <a href="{{ url_for('admin_events') }}">Admin Dashboard</a>
+                {% endif %}
+
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="hero">
+        {% if session.get('user_id') %}
+            <p class="tagline">WELCOME BACK TO EVENTMANAGEMENT</p>
+            <h1>Welcome, {{ session.get('user_name') }}!</h1>
+            <p class="description">
+                Ready to discover your next experience?
+                Explore events and make new memories.
+            </p>
+            <div class="actions">
+                <a class="btn primary" href="{{ url_for('events') }}">Explore Events</a>
+                <a class="btn secondary" href="{{ url_for('my_registrations') }}">My Registrations</a>
+            </div>
+        {% else %}
+            <p class="tagline">YOUR NEXT EXPERIENCE STARTS HERE</p>
+            <h1>Discover Events.<br>Make Memories.</h1>
+            <p class="description">
+                Find exciting events, connect with people, and
+                make every moment count.
+            </p>
+            <div class="actions">
+                <a class="btn primary" href="{{ url_for('register') }}">Get Started</a>
+                <a class="btn secondary" href="#about">Learn More</a>
+            </div>
+        {% endif %}
+    </main>
+
+    <section id="about" class="about">
+        <h2>Everything starts with an experience.</h2>
+        <p>Your space to discover and participate in amazing events.</p>
+    </section>
+
+    <footer>
+        <p>© 2026 EventManagement | Event Management System</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Events | EventManagement</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <nav class="navbar">
+        <h2>EventManagement</h2>
+        <div>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('events') }}">Events</a>
+
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('my_registrations') }}">My Registrations</a>
+
+                {% if session.get('role') == 'admin' %}
+                    <a href="{{ url_for('admin_events') }}">Admin Dashboard</a>
+                {% endif %}
+
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="hero">
+        <p class="tagline">FIND YOUR NEXT EXPERIENCE</p>
+        <h1>Explore Events</h1>
+        <p class="description">
+            Discover exciting experiences, meet new people,
+            and find something worth looking forward to.
+        </p>
+    </main>
+
+    <section class="about">
+        <h2>Upcoming Experiences</h2>
+
+        <!-- Search and location filter -->
+        <div class="form-container">
+            <form action="{{ url_for('events') }}" method="GET">
+                <label for="search">Search by event name</label>
+                <input
+                    type="text"
+                    id="search"
+                    name="search"
+                    placeholder="e.g. Tech Fest"
+                    value="{{ search_query }}"
+                >
+
+                <label for="location">Filter by location</label>
+                <input
+                    type="text"
+                    id="location"
+                    name="location"
+                    placeholder="e.g. Bengaluru"
+                    value="{{ location_filter }}"
+                >
+
+                <button type="submit" class="btn primary">
+                    Search Events
+                </button>
+
+                <a href="{{ url_for('events') }}" class="btn secondary">
+                    Clear Filters
+                </a>
+            </form>
+        </div>
+
+        {% if events %}
+            <div class="event-grid">
+                {% for event in events %}
+                    <article class="event-card">
+                        <p class="tagline">FEATURED EXPERIENCE</p>
+                        <h2>{{ event.title }}</h2>
+                        <p>{{ event.description }}</p>
+
+                        <p>
+                            <strong>Date</strong><br>
+                            {{ event.event_date }}
+                        </p>
+
+                        <p>
+                            <strong>Location</strong><br>
+                            {{ event.location }}
+                        </p>
+
+                        {% if session.get('role') == 'admin' %}
+                            <div class="admin-actions">
+                                <a class="btn secondary"
+                                   href="{{ url_for('edit_event', event_id=event.id) }}">
+                                    Edit Event
+                                </a>
+
+                                <form
+                                    action="{{ url_for('delete_event', event_id=event.id) }}"
+                                    method="POST"
+                                    onsubmit="return confirm('Are you sure you want to delete {{ event.title|e }}? This will also remove its registrations.');">
+
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                                    <button type="submit" class="btn delete-btn">
+                                        Delete Event
+                                    </button>
+                                </form>
+                            </div>
+                        {% endif %}
+
+                        {% if session.get('user_id') %}
+                            {% if event.registration_id %}
+                                <p class="registration-status">
+                                    ✓ You're registered for this event!
+                                </p>
+                            {% else %}
+                                <form
+                                    action="{{ url_for('register_event', event_id=event.id) }}"
+                                    method="POST">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <button type="submit" class="btn primary">
+                                        Register for Event
+                                    </button>
+                                </form>
+                            {% endif %}
+                        {% else %}
+                            <a class="btn primary"
+                               href="{{ url_for('login') }}">
+                                Log in to Register
+                            </a>
+                        {% endif %}
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <article class="event-card">
+                <h2>No matching events found!</h2>
+                <p>Try another event name or location, or clear your filters.</p>
+            </article>
+        {% endif %}
+    </section>
+
+    <footer>
+        <p>© 2026 EventManagement | Event Management System</p>
+    </footer>
+</body>
+</html>

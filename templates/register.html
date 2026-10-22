@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | EventManagement</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <h2>EventManagement</h2>
+        <a href="/">Home</a>
+    </nav>
+
+    <main class="form-container">
+        <h1>Create Your Account</h1>
+        <p>Join EventManagement and discover exciting events.</p>
+
+        <form action="/register" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name"
+                   placeholder="Enter your full name" required>
+
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email"
+                   placeholder="Enter your email" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password"
+                   placeholder="Create a password" required minlength="8">
+
+            <button type="submit" class="btn primary">Create Account</button>
+        </form>
+
+        <p class="form-footer">
+            Already have an account? <a href="/login">Login</a>
+        </p>
+    </main>
+</body>
+</html>
