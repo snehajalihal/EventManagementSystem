@@ -12,7 +12,7 @@ if not app.secret_key:
 
 csrf = CSRFProtect(app)
 
-DATABASE = "events.db"
+DATABASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "events.db")
 
 def get_db_connection():
     connection = sqlite3.connect(DATABASE)
@@ -120,8 +120,6 @@ def login():
 
 
 @app.route("/events")
-
-@app.route("/events")
 def events():
     search_query = request.args.get("search", "").strip()
     location_filter = request.args.get("location", "").strip()
@@ -189,10 +187,7 @@ def admin_events():
         LEFT JOIN registrations
             ON events.id = registrations.event_id
         GROUP BY events.id
-        ORDER BY registration_count DESC, events.event_date
-        LIMIT 5
-    """).fetchall()
-
+        ORDER BY registration_count DES
     connection.close()
 
     if request.method == "POST":
