@@ -368,6 +368,7 @@ def delete_event(event_id):
     return redirect(url_for("events"))
 
 
+initialize_database()
+
 if __name__ == "__main__":
-    initialize_database()
     app.run(debug=False)
