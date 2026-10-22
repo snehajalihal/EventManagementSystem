@@ -65,3 +65,14 @@ This project demonstrates practical experience with Flask application developmen
 ## Author
 
 Sneha J
+
+## Screenshots
+
+### 1. Homepage
+![Homepage](screenshots/homepage.png)
+
+### 2. Event Registration
+![Event Registration](screenshots/event-registration.png)
+
+### 3. Admin Dashboard
+![Admin Dashboard](screenshots/admin-dashboard.png)
