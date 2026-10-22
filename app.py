@@ -12,7 +12,7 @@ if not app.secret_key:
 
 csrf = CSRFProtect(app)
 
-DATABASE = "events.db"
+DATABASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "events.db")
 
 def get_db_connection():
     connection = sqlite3.connect(DATABASE)
@@ -32,7 +32,7 @@ def initialize_database():
         )
     """)
 
-    
+
     connection.execute("""
         CREATE TABLE IF NOT EXISTS events (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -45,7 +45,7 @@ def initialize_database():
         )
     """)
 
-    
+
     connection.execute("""
         CREATE TABLE IF NOT EXISTS registrations (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -118,8 +118,6 @@ def login():
     return render_template("login.html")
 
 
-
-@app.route("/events")
 
 @app.route("/events")
 def events():
@@ -318,12 +316,14 @@ def edit_event(event_id):
             connection.close()
             return "Please fill in all fields.", 400
 
+
         connection.execute(
             """UPDATE events
                SET title = ?, description = ?, event_date = ?, location = ?
                WHERE id = ?""",
             (title, description, event_date, location, event_id)
         )
+
 
         connection.commit()
         connection.close()
