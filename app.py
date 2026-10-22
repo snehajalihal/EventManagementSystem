@@ -187,10 +187,7 @@ def admin_events():
         LEFT JOIN registrations
             ON events.id = registrations.event_id
         GROUP BY events.id
-        ORDER BY registration_count DESC, events.event_date
-        LIMIT 5
-    """).fetchall()
-
+        ORDER BY registration_count DES
     connection.close()
 
     if request.method == "POST":
